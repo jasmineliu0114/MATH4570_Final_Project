@@ -198,11 +198,14 @@ multiple_label = np.array(multiple_label)
 print(multiple_label.shape)
 
 
-# Intraventricular Data
+# Segmented Intraventricular Data
+intraventricular_results = pd.read_csv(path_prefix + "Set2/Results_Brain.csv")
+intraventricular_results = intraventricular_results[intraventricular_results['ROI'].notna()]
+segmented_intraventricular_images = intraventricular_results['Origin'].values
 intraventricular_max_constrast = []
 for dirname, _, filenames in os.walk(path_prefix + 'intraventricular/brain_window'):
     for filename in filenames:
-        if (filename not in flagged):
+        if (filename in segmented_intraventricular_images) & (filename not in flagged):
             intraventricular_max_constrast.append(os.path.join(dirname, filename))
         if (len(intraventricular_max_constrast)==200):
             break
