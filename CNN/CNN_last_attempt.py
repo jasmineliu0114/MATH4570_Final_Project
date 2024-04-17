@@ -282,3 +282,16 @@ history = model.fit(X_train,
                     verbose=1,
                     validation_data=(X_test, y_test))
 
+# Write some history data to files
+accuracy = np.array(history.history['accuracy'])
+val_accuracy = np.array(history.history['val_accuracy'])
+loss = np.array(history.history['loss'])
+val_loss = np.array(history.history['val_loss'])
+np.savez('model_history.npz', accuracy=accuracy, val_accuracy=val_accuracy, loss=loss, val_loss=val_loss)
+
+# Make predictions on the validation dataset
+y_pred = model.predict(X_val)
+
+# Convert one-hot predicted labels to values from [0,4]
+y_true = np.argmax(y_val, axis=1)
+np.savez('model_results.npz', y_pred=y_pred, y_true=y_true)
